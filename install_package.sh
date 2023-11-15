@@ -52,7 +52,7 @@ do
 
 	   update_csv_file "package_list.csv"
     elif [[ "$package_name" == "gcc" && "$part" == "2" && "$installed" == "no" ]]; then
-	   sh "$CHAPTER/$package_name.sh" $LFS/sources/$package_name-$part $part 
+	   sh "$CHAPTER/$package_name.sh" $LFS/sources/$package_name-"part-"$part $part 
 	   update_csv_file "package_list.csv"
     
     elif [ "$installed" == "no" ]; then
