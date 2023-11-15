@@ -6,41 +6,48 @@
 # Date: [Current Date]
 
 
+link=$3
 # Change directory to the specified gcc source directory
-if [ "$2" == "passe 2" ]; then
+if [ "$2" == "2" ]; then
+
 	echo -e "\n***************GCC Pass 2***************\n" 
-	cd $1
+#pushd $LFS/sources
+#	mkdir $LFS/sources/tmp
+#	wget $link
+#	tar -xf $link -C $1
+#popd
+#cd $1
 
-	case $(uname -m) in
-  	   x86_64)
-    		sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
-  	;;
-	esac
-	cd       build
-	mkdir -pv $LFS_TGT/libgcc
-	ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
+#case $(uname -m) in
+# 	   x86_64)
+#   		sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64
+# 	;;
+#esac
+#cd       build
+#mkdir -pv $LFS_TGT/libgcc
+#ln -s ../../../libgcc/gthr-posix.h $LFS_TGT/libgcc/gthr-default.h
 
-	../configure                                       \
-	--build=$(../config.guess)                     \
-    	--host=$LFS_TGT                                \
-    	--prefix=/usr                                  \
-    	CC_FOR_TARGET=$LFS_TGT-gcc                     \
-    	--with-build-sysroot=$LFS                      \
-    	--enable-initfini-array                        \
-    	--disable-nls                                  \
-    	--disable-multilib                             \
-    	--disable-decimal-float                        \
-    	--disable-libatomic                            \
-    	--disable-libgomp                              \
-    	--disable-libquadmath                          \
-    	--disable-libssp                               \
-    	--disable-libvtv                               \
-    	--disable-libstdcxx                            \
-	--enable-languages=c,c++
+#../configure                                       \
+#--build=$(../config.guess)                     \
+#   	--host=$LFS_TGT                                \
+#   	--prefix=/usr                                  \
+#   	CC_FOR_TARGET=$LFS_TGT-gcc                     \
+#   	--with-build-sysroot=$LFS                      \
+#   	--enable-initfini-array                        \
+#   	--disable-nls                                  \
+#   	--disable-multilib                             \
+#   	--disable-decimal-float                        \
+#   	--disable-libatomic                            \
+#   	--disable-libgomp                              \
+#   	--disable-libquadmath                          \
+#   	--disable-libssp                               \
+#   	--disable-libvtv                               \
+#   	--disable-libstdcxx                            \
+#--enable-languages=c,c++
 
-	make
-	make DESTDIR=$LFS install
-	ln -sv gcc $LFS/usr/bin/cc
+#make
+#make DESTDIR=$LFS install
+#ln -sv gcc $LFS/usr/bin/cc
 
 else
 
