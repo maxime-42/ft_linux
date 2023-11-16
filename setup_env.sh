@@ -1,70 +1,28 @@
 #!/bin/bash
 
-#!/bin/bash
+# Variables
+LFS="/mnt/lfs"
+LFS_DISK="/dev/sdb"
+LFS_TGT="x86_64-lfs-linux-gnu"
 
-# Specify the file path you want to check
+# Check if variables exist in .bashrc
+#if ! grep -q "export LFS=" ~/.bashrc; then
+  echo "export LFS=\"$LFS\"" >> ~/.bashrc
+#fi
 
-file_path="/home/lfs/.bash_profile"
-# Check if the file doesn't exist
-if [ ! -e "$file_path" ]; then
-  echo "This file doesn't exist yet."
+#if ! grep -q "export LFS_DISK=" ~/.bashrc; then
+  echo "export LFS_DISK=\"$LFS_DISK\"" >> ~/.bashrc
+#fi
 
-  cat > /home/lfs/.bash_profile << "EOF"
-       exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
-EOF
-chown lfs:lfs /home/lfs/.bash_profile 
-source ~/.bash_profile
-else
-  echo "bash_profile is file exists."
-fi
+#if ! grep -q "export LFS_TGT=" ~/.bashrc; then
+  echo "export LFS_TGT=\"$LFS_TGT\"" >> ~/.bashrc
+#fi
 
-
-# Set up ~/.bash_profile
-#cat > /home/lfs/.bash_profile << "EOF"
-#exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
-#EOF
-
-
-file_path="/home/lfs/.bashrc"
-# Check if the file doesn't exist
-if [ ! -e "$file_path" ]; then
-cat > /home/lfs/.bashrc << "EOF"
-set +h
-umask 022
-LFS=/mnt/lfs
-LC_ALL=POSIX
-LFS_TGT=$(uname -m)-lfs-linux-gnu
-PATH=/usr/bin
-if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
-PATH=$LFS/tools/bin:$PATH
-CONFIG_SITE=$LFS/usr/share/config.site
-export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
-EOF
-
-# Set ownership to the lfs user
-chown lfs:lfs /home/lfs/.bash_profile /home/lfs/.bashrc
-
-echo "User 'lfs' has been set up with custom bash configurations."
-
-chown lfs:lfs /home/lfs/.bashrc
+# Load the updated .bashrc
 source ~/.bashrc
-else
-  echo "bash config  is already done."
-fi
 
+echo "Environment variables set:"
+echo "LFS=$LFS"
+echo "LFS_DISK=$LFS_DISK"
+echo "LFS_TGT=$LFS_TGT"
 
-# Set up ~/.bashrc
-#cat > /home/lfs/.bashrc << "EOF"
-#set +h
-#umask 022
-#LFS=/mnt/lfs
-#LC_ALL=POSIX
-#LFS_TGT=$(uname -m)-lfs-linux-gnu
-#PATH=/usr/bin
-#if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
-#PATH=$LFS/tools/bin:$PATH
-#CONFIG_SITE=$LFS/usr/share/config.site
-#export LFS LC_ALL LFS_TGT PATH CONFIG_SITE
-#EOF
-
-# Set ownership to the lfs user

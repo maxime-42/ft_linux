@@ -1,12 +1,18 @@
 #! /bin/bash
 
-CHAPITER_5=5
+#########################
+partition="/dev/sdb3" 
+mount_point="/mnt/lfs"
 
-echo -e "\n\n--------- START lfs user -------\n"
-#######################
-sh setup_env.sh
-#######################
-sh download_package.sh
-#######################
-sh install_package.sh $CHAPITER_5 
-######################
+if grep -qs "$partition" /proc/mounts; then
+	echo -e "$LFS is alreay mounted"
+else
+	sh setup_disk.sh
+	sh setup_env.sh
+fi
+
+###########################
+sh filesystem.sh
+############################
+sh add_user.sh
+############################
