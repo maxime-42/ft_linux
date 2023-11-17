@@ -2,11 +2,12 @@
 
 CHAPITER_5=5
 
-echo -e "\n\n--------- START lfs user -------\n"
+echo -e "\n\n--------- START user script -------\n"
 #######################
 sh setup_env.sh
+
 #######################
-sh download_package.sh
+sh download.sh
 #######################
-sh install_package.sh $CHAPITER_5 
+sh install_package.sh
 ######################

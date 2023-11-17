@@ -18,8 +18,6 @@ case $(uname -m) in
 esac
 
 # Apply patch for Glibc programs using /var/db
-
-
 patch -Np1 -i ../glibc-2.35-fhs-1.patch
 
 mkdir -v build
@@ -40,12 +38,10 @@ echo "rootsbindir=/usr/sbin" > configparms
 make
 
 echo -e "Warning on the command 'make DESTDIR=$LFS install' \n"
-
 make DESTDIR=$LFS install
 
 
 echo -e "\nNext command : sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd"
-
 sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
 
 echo 'int main(){}' > dummy.c
@@ -57,6 +53,4 @@ rm -v dummy.c a.out
 
 
 $LFS/tools/libexec/gcc/$LFS_TGT/11.2.0/install-tools/mkheaders
-
-
 

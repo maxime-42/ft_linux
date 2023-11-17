@@ -16,7 +16,7 @@
 # Step 1: Clean the Kernel Source
 
 
-package_dirname=$LFS/sources/$1
+package_dirname=$1
 
 cd $package_dirname
 
@@ -28,4 +28,4 @@ find usr/include -name '.*' -delete
 rm usr/include/Makefile
 cp -rv usr/include $LFS/usr
 
-echo "Linux API headers installation complete."
+echo -e "\nLinux API headers installation complete.\n"

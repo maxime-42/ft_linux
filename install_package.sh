@@ -24,54 +24,42 @@ local csv_file="$1"
 
 
 
-# Variable for chapter number based on script argument
-CHAPTER="chapter-$1"
-
+deploy_script=""
 # Reading CSV file and processing each line
 while IFS=';' read -r package_name version download_link md5_checksum installed part
 do
     # Displaying package information
 
-    echo -e "\n INSTALLATION :\n"
+    echo -e "\n\n INSTALLATION :\n"
     echo  "Package Name: $package_name"
     echo  "Version: $version"
     echo  "Download Link: $download_link"
     echo  "MD5 Checksum: $md5_checksum"
-    echo "Installed : " $installed
-    echo -e "Part : $part"
-    echo -e "Path: $LFS/sources/$package_name-$version \n"
+    echo  "Installed : " $installed
+    echo  "Part : $part"
     
-    file_path=$CHAPTER/$package_name.sh
-    directory_path=$LFS/sources/$package_name-$version/build
-   
-    if [[ "$package_name" == "libstdc++" && "$download_link" == "" && "$installed" == "no" ]]; then
-   	  sh "$CHAPTER/$package_name.sh" $LFS/sources/$package_name-$version
-	   update_csv_file "package_list.csv"
-    elif [[ "$package_name" == "binutils" && "$part" == "2" && "$installed" == "no" ]]; then
-	  sh "$CHAPTER/$package_name.sh" $LFS/sources/$package_name-$version "2"
-
-	   update_csv_file "package_list.csv"
-    elif [[ "$package_name" == "gcc" && "$part" == "2" && "$installed" == "no" ]]; then
-	   sh "$CHAPTER/$package_name.sh" $LFS/sources/$package_name-"part-"$part $part 
-	   update_csv_file "package_list.csv"
-    
-    elif [ "$installed" == "no" ]; then
-	# Changing directory to the specified chapter
-	pushd $CHAPTER
-
-		# Running the package installation script and logging output to a file
-		sh $package_name.sh $LFS/sources/$package_name-$version
-		
-		#sh $package_name.sh $package_name-$version | tee > $package_name.log
-		# Returning to the previous directory
-
-	   	update_csv_file "package_list.csv"
-	popd
-
+    directory_package=""
+    if [ $part != "" ]; then
+    	deploy_script="$package_name-part-$part.sh"
+    	directory_package="$LFS/sources/$package_name-part-$part"
     else
-       echo -e "The package '$package_name' has been already installed"
+    	deploy_script="$package_name.sh" 
+    	directory_package="$LFS/sources/$package_name-$version"
     fi
     
+    echo  -e "Deployment script :  $deploy_script\n"
+    echo  -e "Directory package :  $directory_package \n\n"
+
+    if [ "$installed" == "no" ]; then
+	pushd "deployments"
+		# Running the package installation script and logging output to a file
+		sh $deploy_script $directory_package
+		#update_csv_file "package_list.csv"
+	popd
+   	echo -e "Success installation :  $package_name\n" 
+    else
+		echo -e "The package '$package_name' has been already installed"
+    fi
     echo -e "_____________________________________\n"
 done < package_list.csv
 
