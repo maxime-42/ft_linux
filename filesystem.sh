@@ -4,6 +4,9 @@
 # Description: Create a limited directory structure in the LFS filesystem.
 # This is required for the compilation and installation of programs in later chapters.
 
+mkdir -pv /{boot,home,mnt,opt,srv}
+
+
 folder_to_check="$LFS/sources/"
 
 # Check if the folder exists
